@@ -1,0 +1,10 @@
+
+tests:
+    
+    - name: list objects
+      verbose: True
+      url: /shed/objects
+      request_headers:
+          accept: application/json
+      response_json_paths:
+          $.objects: []

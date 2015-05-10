@@ -1,0 +1,18 @@
+
+defaults:
+    verbose: True
+
+tests:
+    - name: create a named container
+      url: /shed
+      method: PUT
+      request_headers:
+          content-type: application/json
+      data:
+          owner: sam
+      status: 201
+
+    - name: confirm the container
+      url: $LOCATION
+      response_json_paths:
+          $.owner: sam

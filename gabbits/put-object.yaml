@@ -1,0 +1,11 @@
+defaults:
+    verbose: True
+
+tests:
+    - name: put a named object in shed
+      url: /shed/objects/kitten
+      method: PUT
+      request_headers:
+          content-type: image/png
+      data: <@kitten.png
+      status: 201

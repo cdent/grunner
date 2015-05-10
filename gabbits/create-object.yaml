@@ -1,0 +1,21 @@
+defaults:
+    verbose: True
+tests:
+    - name: create an object with a uuid
+      url: /shed/objects
+      method: POST
+      request_headers:
+          content-type: application/json
+      data:
+          model: honda
+          color: black
+      status: 201
+      response_headers:
+          location: /$SCHEME://$NETLOC/
+    - name: get that uuid object
+      url: $LOCATION
+      response_headers:
+          content-type: application/json
+      response_json_paths:
+          $.model: honda
+          $.color: black

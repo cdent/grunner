@@ -1,0 +1,9 @@
+
+tests:
+    - name: try to delete the front page
+      verbose: True
+      url: /
+      method: DELETE
+      status: 405
+      response_headers:
+          allow: POST, GET

@@ -1,0 +1,7 @@
+# Validate the presence of a string
+tests:
+    - name: frontpage string
+      url: /
+      verbose: True
+      response_strings:
+          - <p>This is the front page of the Gabbi Demo Application!</p>
