@@ -11,7 +11,7 @@ tests:
           color: black
       status: 201
       response_headers:
-          location: /$SCHEME://$NETLOC/
+          location: /$SCHEME://$NETLOC/shed/objects/[a-z0-9-]+$/
     - name: get that uuid object
       url: $LOCATION
       response_headers:
