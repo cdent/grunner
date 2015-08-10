@@ -2,16 +2,19 @@
 
 LISTFILE=$1
 HOSTPORT=${2:-localhost:8000}
+FIFO=${3:-/tmp/fnord}
+export GABBI_FORCE_COLOR=True
 
 function wait_one_key() {
     read -n 1 -s
 }
 
-for file in $(cat $LISTFILE); do
+wait_one_key
+(for file in $(cat $LISTFILE); do
     clear
-    cat $file
-    wait_one_key
-    gabbi-run $HOSTPORT 2>&1 < $file |less -e
-done
+    clear >${FIFO}
+    cat $file >${FIFO}
+    gabbi-run $HOSTPORT < $file |less -eR
+done) 2>${FIFO}
 
 clear
