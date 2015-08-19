@@ -1,8 +1,6 @@
-defaults:
-    verbose: True
-
 tests:
     - name: put a named object in shed
+      verbose: True
       url: /shed/objects/kitten
       method: PUT
       request_headers:

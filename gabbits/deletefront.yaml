@@ -1,4 +1,3 @@
-
 tests:
     - name: try to delete the front page
       verbose: True

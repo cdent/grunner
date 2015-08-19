@@ -14,6 +14,7 @@ wait_one_key
     clear
     clear >${FIFO}
     cat $file >${FIFO}
+    (echo ; echo) >${FIFO}
     gabbi-run $HOSTPORT < $file |less -eR
 done) 2>${FIFO}
 

@@ -1,4 +1,3 @@
-# Confirm the front page exists
 tests:
     - name: simple request
       verbose: True

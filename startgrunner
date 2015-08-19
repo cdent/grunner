@@ -1,13 +1,13 @@
-#!/bin/sh
+#!/bin/sh -e
 
 LISTFILE=${1:-gab}
 HOSTPORT=${2:-localhost:8000}
 FIFO=${3:-/tmp/fnord}
 
-mkfifo $FIFO || true
+mkfifo $FIFO &>/dev/null || true
 
-tmux new-session -d "./grunner $LISTFILE $HOSTPORT $FIFO"
-tmux split-window -h "cat $FIFO"
+tmux new-session -d "cat $FIFO"
+tmux split-window -h "./grunner $LISTFILE $HOSTPORT $FIFO"
 tmux selectw -t 0 
-tmux selectp -t 0
+tmux selectp -t 1
 tmux -2 attach-session -d

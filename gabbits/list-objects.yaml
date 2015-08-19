@@ -1,5 +1,6 @@
 defaults:
     verbose: True
+
 tests:
     - name: list objects
       url: /shed/objects

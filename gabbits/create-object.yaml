@@ -1,5 +1,6 @@
 defaults:
-    verbose: False
+    verbose: True
+
 tests:
     - name: create an object with a uuid
       url: /shed/objects

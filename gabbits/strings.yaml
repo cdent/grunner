@@ -1,4 +1,3 @@
-# Validate the presence of a string
 tests:
     - name: frontpage string
       url: /
