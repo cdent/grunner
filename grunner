@@ -1,7 +1,7 @@
 #!/bin/sh
 
 LISTFILE=$1
-HOSTPORT=${2:-localhost:8000}
+HOSTPORT=${2:-127.0.0.1:8000}
 FIFO=${3:-/tmp/fnord}
 export GABBI_FORCE_COLOR=True
 
