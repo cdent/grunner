@@ -1,6 +1,5 @@
 defaults:
     verbose: True
-
 tests:
     - name: list objects
       url: /shed/objects
@@ -8,12 +7,10 @@ tests:
           accept: application/json
       response_json_paths:
           $.objects[-1]: kitten
-
     - name: delete one object
       url: /shed/objects/$RESPONSE['$.objects[0]']
       method: DELETE
       status: 204
-
     - name: list objects text
       url: /shed/objects
       request_headers:

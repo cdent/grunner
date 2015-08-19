@@ -4,6 +4,9 @@ LISTFILE=$1
 HOSTPORT=${2:-127.0.0.1:8000}
 FIFO=${3:-/tmp/fnord}
 export GABBI_FORCE_COLOR=True
+export GABBI_HEADER_COLOR=green
+export GABBI_REQUEST_COLOR=red
+export GABBI_STATUS_COLOR=red
 
 function wait_one_key() {
     read -n 1 -s
