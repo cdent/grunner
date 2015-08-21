@@ -1,7 +1,6 @@
 # Set defaults for every test in this file
 defaults:
     verbose: True
-
 tests:
     - name: create a named container
       url: /shed
@@ -13,7 +12,6 @@ tests:
       data:
           owner: sam
       status: 201
-
     - name: confirm the container
       # Refer to the previous test
       url: $LOCATION
