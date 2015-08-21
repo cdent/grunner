@@ -1,4 +1,4 @@
 tests:
     - name: simple request
-      verbose: True
+      verbose: headers
       url: /

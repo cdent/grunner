@@ -16,6 +16,7 @@ wait_one_key
 (for file in $(cat $LISTFILE); do
     clear
     clear >${FIFO}
+    echo $file >${FIFO}
     cat $file >${FIFO}
     (echo ; echo) >${FIFO}
     gabbi-run $HOSTPORT < $file |less -eR

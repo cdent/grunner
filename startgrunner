@@ -10,6 +10,7 @@ tmux new-session -d "cat $FIFO"
 tmux split-window -v -l 4 "cd ../gabbi-demo && gunicorn --access-logfile - gdemo"
 tmux selectp -t 0
 tmux split-window -h "./grunner $LISTFILE $HOSTPORT $FIFO"
+tmux resize-pane -t 0 -x 70
 tmux selectw -t 0 
 tmux selectp -t 1
 tmux attach-session -d
