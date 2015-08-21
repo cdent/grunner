@@ -1,9 +1,10 @@
 tests:
-    - name: put a named object in shed
+    - name: put a kitten in the shed
       verbose: True
       url: /shed/objects/kitten
       method: PUT
       request_headers:
           content-type: image/png
+      # Load data from a file
       data: <@kitten.png
       status: 201

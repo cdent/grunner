@@ -1,3 +1,4 @@
+# Set defaults for every test in this file
 defaults:
     verbose: True
 
@@ -5,13 +6,17 @@ tests:
     - name: create a named container
       url: /shed
       method: PUT
+      # Set request headers
       request_headers:
           content-type: application/json
+      # Set the request body from data
       data:
           owner: sam
       status: 201
 
     - name: confirm the container
+      # Refer to the previous test
       url: $LOCATION
+      # Use JSONPath to query response
       response_json_paths:
           $.owner: sam

@@ -1,6 +1,8 @@
 tests:
     - name: frontpage string
       url: /
+      # Display headers and bodies
       verbose: True
+      # Inspect response strings
       response_strings:
           - <p>This is the front page of the Gabbi Demo Application!</p>

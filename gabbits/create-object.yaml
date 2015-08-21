@@ -11,8 +11,9 @@ tests:
           color: black
       status: 201
       response_headers:
+          # Use regular expressions in header tests. DANGER!
           location: /$SCHEME://$NETLOC/shed/objects/[a-z0-9-]+$/
-    - name: get that uuid object
+    - name: get that new object
       url: $LOCATION
       response_headers:
           content-type: application/json

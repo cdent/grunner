@@ -2,7 +2,6 @@ gabbits/simple.yaml
 gabbits/strings.yaml
 gabbits/deletefront.yaml
 gabbits/create-container.yaml
-gabbits/objects.yaml
 gabbits/create-object.yaml
 gabbits/put-object.yaml
 gabbits/list-objects.yaml

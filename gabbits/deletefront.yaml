@@ -2,7 +2,10 @@ tests:
     - name: try to delete the front page
       verbose: True
       url: /
+      # Use other request methods
       method: DELETE
+      # Check status codes
       status: 405
+      # Evaluated response headers
       response_headers:
           allow: POST, GET

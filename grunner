@@ -17,7 +17,7 @@ wait_one_key
     clear
     clear >${FIFO}
     echo $file >${FIFO}
-    cat $file >${FIFO}
+    cat $file |pygmentize -lyaml -f terminal -O bg=light >${FIFO}
     (echo ; echo) >${FIFO}
     gabbi-run $HOSTPORT < $file |less -eR
 done) 2>${FIFO}

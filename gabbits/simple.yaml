@@ -1,4 +1,9 @@
+# A YAML file
 tests:
+    # containing a sequence of named tests
     - name: simple request
-      verbose: headers
       url: /
+      # default request method of GET
+      # default status check of 200
+      # output the headers
+      verbose: headers

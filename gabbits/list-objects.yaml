@@ -8,6 +8,7 @@ tests:
       response_json_paths:
           $.objects[-1]: kitten
     - name: delete one object
+      # Refer to the JSON of the previous response
       url: /shed/objects/$RESPONSE['$.objects[0]']
       method: DELETE
       status: 204
@@ -15,6 +16,7 @@ tests:
       url: /shed/objects
       request_headers:
           accept: text/plain
+      # Use YAML's many features for handling strings
       response_strings:
           - |-
               kitten
