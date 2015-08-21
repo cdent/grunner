@@ -7,10 +7,9 @@ FIFO=${3:-/tmp/fnord}
 mkfifo $FIFO &>/dev/null || true
 
 tmux new-session -d "cat $FIFO"
-tmux split-window -v -l 4 "cd ../gabbi-demo && gunicorn --access-logfile - gdemo"
-tmux selectp -t 0
 tmux split-window -h "./grunner $LISTFILE $HOSTPORT $FIFO"
+tmux split-window -v -l 4 "cd ../gabbi-demo && gunicorn --access-logformat '\"%(r)s\" %(s)s %(b)s \"%(f)s\" \"%(a)s\"' --access-logfile - gdemo"
 tmux resize-pane -t 0 -x 70
 tmux selectw -t 0 
 tmux selectp -t 1
-tmux attach-session -d
+tmux -2 attach-session -d
