@@ -2,7 +2,7 @@
 
 LISTFILE=$1
 HOSTPORT=${2:-127.0.0.1:8000}
-FIFO=${3:-/tmp/fnord}
+FIFO=${3:-/dev/stdout}
 export GABBI_FORCE_COLOR=True
 export GABBI_HEADER_COLOR=green
 export GABBI_REQUEST_COLOR=red
@@ -13,13 +13,18 @@ function wait_one_key() {
 }
 
 wait_one_key
+
 (for file in $(cat $LISTFILE); do
     clear
-    clear >${FIFO}
+    if [ "$FIFO" != "/dev/stdout" ]; then
+        clear >${FIFO}
+    fi
     echo $file >${FIFO}
     cat $file |pygmentize -lyaml -f terminal -O bg=light >${FIFO}
-    (echo ; echo) >${FIFO}
+    if [ "$FIFO" = "/dev/stdout" ]; then
+        wait_one_key
+    else
+        (echo; echo) >${FIFO}
+    fi
     gabbi-run $HOSTPORT < $file |less -eR
 done) 2>${FIFO}
-
-clear
