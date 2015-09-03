@@ -1,0 +1,177 @@
+
+_Not the actual notes, but notes about the notes._
+
+Hi, I'm here to talk about a tool I created testing web-based services
+called "Gabbi". My name is Chris Dent and I'm currently working for Red
+Hat as part of their OpenStack group.
+
+I've been developing tools somewhere in the vicinity of the web for
+quite a long time. I'm in the school of thought that thinks the reason
+the web is successful is not just because it is open and
+standards-based but because that openness allows and encourages access
+from all sort of agents, human and machine. That access is like a
+conversation: as long as the thing you are talking with is following
+the basic rules of the language then anyone or anything that speaks
+the language can participate.
+
+Tests, too, are a form of conversation. Depending on how they are used
+they either discover or validate the correct grammar for an
+interaction and once established operate as the authority on the
+grammar.
+
+I've been working on OpenStack for about a year and a half. It's a
+cool and exciting project creating very useful stuff but it sometimes
+feels like it has been built by people who hate both Python and HTTP.
+The learning curve is extremely steep and the costs associated with
+experimenting and exploring are very high.
+
+In other situations where I've been faced with such confusion I've
+been able to use the tests associated the project as a way of
+understanding what's going on. This hasn't worked too well in
+OpenStack because many of the tests are in deeply nested class
+hierarchies that obscure any sense of what's going on. For the sake of
+being DRY API interactions are hidden behind arbitrary clients that
+mask HTTP interactions and error handling. In general it is just too
+hard to see what's going on.
+
+All this frustration made me itch, so I scratched it. I decided I need
+to create a tool that made it easy to evaluate APIs that was clean,
+clear and focused on the HTTP and could be useful equally for
+exploring and experimenting with existing APIs as well as doing test
+driven development of new APIs.
+
+I called the result "gabbi" and it looks a bit like this. To me, at
+least, the gabbi version of this test is a good deal more readable.
+The upper example is more about Python than HTTP. Python is great but
+that's not really what we're trying to test here. If you hadn't
+already seen it in the gabbi example would you be able to construct
+the URL being used in the request from the information in the first
+test?
+
+Before I begin the demo I should explain the pieces involved. Gabbi
+creates YAML-based representations of HTTP requests that can be run as
+tests. In this demo we're going to be using a command line too called
+gabbi-run to process the files. This is just one way to process them.
+On the left the contents of the test file and the output of gabbi-run is
+displayed. On the top right we have a verbose representation of the HTTP
+request. On the bottom right is the request log of a gunicorn driven
+WSGI server that operates as a simple object storage system.
+
+In this first example we're seeing the basics of a gabbi file. It is a
+YAML file containing a "tests" entry containing an ordered sequence of
+named tests. Each test must have a name and a url. If no method or
+status are provided they default to GET and 200. Over on the right we
+see a representation of what we send to the server and what we get
+back. Because of the "verbose" setting we are only seeing headers for
+this test. Here below is the GET request in the log of the server.
+
+In this next example we are making the same request but checking to
+see that the response contains a string that we are expecting. When
+verbose is set to "true" both headers and bodies are displayed.
+
+It's possible to state request method, evaluate the status code and
+inspect the response headers. In this example we're trying to delete
+the root URL. The server won't allow DELETE there so there's a 405
+response and an allow header indicating which methods are allowed.
+
+If a gabbi file sets defaults they are used for every test in that
+file. Each test can override the defaults if it needs to do so. In
+this case we're turning on verbose for both requests in the file. The
+first request shows two features:
+
+* being able to set any request_headers
+* being able to set the request body. If data is not a string and
+  content-type has been set appropriately date is transformed into
+  JSON.
+
+As we can see on the right a small bit of JSON is PUT to the server.
+
+In the second request we confirm that the container we tried to create
+is there and has the owner we expect. $LOCATION is a magic variable that
+is expanded to whatever the value of the location header was in the
+previous response. response_json_paths let us inspect the response
+body, if it is JSON. In this case we are confirming that we have an
+object containing an "owner" key with a "sam" value.
+
+Now we're going to create and confirm an object in the container. In
+this API if we POST to the objects collection a new object is created
+for us with a uuid as its identifier. In response_headers we're using
+a regular expression to validate that the location header ends in what
+looks like a uuid. This is a very useful feature but I tend to use it
+sparingly as it introduces complexity and ambiguity in the tests,
+cutting down on readability a great deal.
+
+The subsequent GET confirms that the new object is where we expect it
+to be and has the desired data.
+
+Now we're going to PUT a kitten in the shed. This demonstrates that
+data can be loaded from an external file. Here it is now:
+http://localhost:8000/shed/objects/kitten
+
+It's possible to use JSONPath to refer to the data in the previous
+response. In this example we're asking to delete the first object in
+the list of objects in the shed. And then we confirm the kitten is
+still there (note the use of the accept header to get a different
+representation).
+
+Those are just a few of the features in Gabbi. We've seen some of
+these but there are more:
+
+* It's possible to access environment variables, perhaps containing
+  authentication information for headers.
+* Asynchronous resources can be polled a set number of times with a
+  delay until an expected result happens or the loop expires. When the
+  loop expires the most recent error is reported as the test failure.
+* Individual tests can be marked to be skipped or xfailed. This has
+  proven very useful. An xfailing test can show the correct behavior
+  and be annotated with a reference to a bug.
+* Gabbi uses the load_tests protocol from unittest to generate tests
+  that can be handled by many Python testrunners, such as testtools or
+  subunit. Each individual file is treated as a custom TestSuite that
+  is run in order. If, from the testrunner, you select that only one
+  test in a particular file is to be run, all tests prior to that one
+  in the suite are run.
+* Each file may choose to establish a set of fixtures prior to the
+  TestSuite running. These can, for example, establish a persistence
+  layer or some sample data.
+* If you're developing a test suite for an app that may be mounted in
+  different place on a server, Gabbi can deal with this by using a
+  prefix. The tests remain the same, the prefix is injected when
+  constructing URLs.
+* It is possible to mix URLs that have no host and URLs with a host in
+  the same YAML file. If no host is present the default defined in the
+  runner is used. This can be used to create interesting fully API
+  driven integration tests: create a resource over on server A, poll
+  until a related resource is brought into existence on server B.
+* And finally there's no need to have a running web server at all. If
+  the app being tested is a WSGI app, then it can be tested directly
+  using wsgi-intercept.
+
+Gabbi is about 9 months old now. In that time I've been able to
+identify some interesting patterns of use. One important aspect of
+gabbi is that it is so easy to write tests that it can be quite fun to
+use and one of the most effective ways to use it is to play dumb and
+just throw random stuff at the API being tested and see what happens.
+This tends to reveal lots of interesting bugs.
+
+More often than not if you're testing something interesting you're
+going to need some kind of configuration fixture that will make sure
+that the application knows where its persistence layer is and what
+middleware is in place.
+
+One of the biggest things learned from observing people using the tool
+is that it can be very tempting to use gabbi too much, either in
+evaluating too much in one single test or trying to evaluate, by way
+of secondary behaviors, aspects of the system that are beyond the API.
+While sometimes this may be useful or required, making a habit of it
+results in unreadable tests and then we are back where we started in a
+pre-gabbi era.
+
+Thanks very much. Here are some links that are related to Gabbi. Note
+that the gabbi-demo is the server I used in today's demo. Besides
+being useful for that it is also built as a tutorial for how to do
+test driven development with Gabbi. If you read the git commit log in
+reverse order it describes how to make a simple object API with gabbi
+tests.
+
+Questions?
