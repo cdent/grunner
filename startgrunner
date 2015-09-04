@@ -3,13 +3,13 @@
 # black inconsolata 22pt on white works pretty well
 
 LISTFILE=${1:-gab}
-HOSTPORT=${2:-127.0.0.1:8000}
+TARGET=${2:-http://127.0.0.1:8000}
 FIFO=${3:-/tmp/fnord}
 
 mkfifo $FIFO &>/dev/null || true
 
 tmux new-session -d "cat $FIFO"
-tmux split-window -h "./grunner $LISTFILE $HOSTPORT $FIFO"
+tmux split-window -h "./grunner $LISTFILE $TARGET $FIFO"
 tmux split-window -v -l 4 "cd ../gabbi-demo && gunicorn --access-logformat '\"%(r)s\" %(s)s %(b)s' --access-logfile - gdemo"
 tmux resize-pane -t 0 -x 70
 tmux selectw -t 0 

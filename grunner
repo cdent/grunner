@@ -1,7 +1,7 @@
 #!/bin/sh
 
 LISTFILE=$1
-HOSTPORT=${2:-127.0.0.1:8000}
+TARGET=${2:-http://127.0.0.1:8000}
 FIFO=${3:-/dev/stdout}
 export GABBI_FORCE_COLOR=True
 export GABBI_HEADER_COLOR=green
@@ -26,5 +26,5 @@ wait_one_key
     else
         (echo; echo) >${FIFO}
     fi
-    gabbi-run $HOSTPORT < $file |less -eR
+    gabbi-run $TARGET < $file |less -eR
 done) 2>${FIFO}
