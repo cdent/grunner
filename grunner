@@ -24,7 +24,7 @@ wait_one_key
     if [ "$FIFO" = "/dev/stdout" ]; then
         wait_one_key
     else
-        (echo; echo) >${FIFO}
+        echo >${FIFO}
     fi
     gabbi-run $TARGET < $file |less -eR
 done) 2>${FIFO}

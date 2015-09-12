@@ -1,6 +1,8 @@
 
 _Not the actual notes, but notes about the notes._
 
+keywords: access, converation, basic rules, visibility
+
 Hi, I'm here to talk about a tool I created testing web-based services
 called "Gabbi". My name is Chris Dent and I'm currently working for Red
 Hat as part of their OpenStack group.
@@ -15,15 +17,15 @@ the basic rules of the language then anyone or anything that speaks
 the language can participate.
 
 Tests, too, are a form of conversation. Depending on how they are used
-they either discover or validate the correct grammar for an
-interaction and once established operate as the authority on the
-grammar.
+they can confirm that everything is still speaking the same language or
+help the right language be found.
 
-I've been working on OpenStack for about a year and a half. It's a
-cool and exciting project creating very useful stuff but it sometimes
-feels like it has been built by people who hate both Python and HTTP.
-The learning curve is extremely steep and the costs associated with
-experimenting and exploring are very high.
+I've been working on OpenStack for about a year and a half. It's a cool
+and exciting project creating very useful stuff but it sometimes feels
+like it has been built by people who hate both Python and hate HTTP. The
+systems are complex and inscrutable, the learning curve is extremely
+steep and the costs associated with experimenting and exploring are
+very high.
 
 In other situations where I've been faced with such confusion I've
 been able to use the tests associated the project as a way of
@@ -40,16 +42,15 @@ clear and focused on the HTTP and could be useful equally for
 exploring and experimenting with existing APIs as well as doing test
 driven development of new APIs.
 
-I called the result "gabbi" and it looks a bit like this. To me, at
-least, the gabbi version of this test is a good deal more readable.
-The upper example is more about Python than HTTP. Python is great but
-that's not really what we're trying to test here. If you hadn't
-already seen it in the gabbi example would you be able to construct
-the URL being used in the request from the information in the first
-test?
+I called the result "gabbi" and started using it to test a few OpenStack
+projects. It looks a bit like this. To me, at least, the gabbi version
+of this test is a good deal more readable. The upper example is more
+about Python than HTTP. Python is great but that's not really what we're
+trying to test here. From just the visible Python would you be able to
+reconstruct the URL being used in the request?
 
 Before I begin the demo I should explain the pieces involved. Gabbi
-creates YAML-based representations of HTTP requests that can be run as
+uses YAML-based representations of HTTP requests that can be run as
 tests. In this demo we're going to be using a command line too called
 gabbi-run to process the files. This is just one way to process them.
 On the left the contents of the test file and the output of gabbi-run is
@@ -113,6 +114,11 @@ response. In this example we're asking to delete the first object in
 the list of objects in the shed. And then we confirm the kitten is
 still there (note the use of the accept header to get a different
 representation).
+
+And finally, I need some input. A new style of expressing the request
+method and URL is being explored. How do you feel about the second option
+here? Is it better because it is more readable or not great because
+it is less explicit and is different from the rest of the structure?
 
 Those are just a few of the features in Gabbi. We've seen some of
 these but there are more:

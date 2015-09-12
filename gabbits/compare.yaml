@@ -1,0 +1,17 @@
+defaults:
+    verbose: True
+tests:
+# You decide!
+# Which is better
+    - name: explicit method and url keys
+      url: /shed/objects
+      method: GET
+      status: 200
+      response_json_paths:
+          $.objects[0]: kitten
+
+    - name: joined method and url
+      GET: /shed/objects
+      status: 200
+      response_json_paths:
+          $.objects[0]: kitten
