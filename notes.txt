@@ -3,7 +3,7 @@ _Not the actual notes, but notes about the notes._
 
 keywords: access, conversation, basic rules, visibility
 
-Hi, I'm here to talk about a tool I for testing web-based services
+Hi, I'm here to talk about a tool I built for testing web-based services
 called "Gabbi". My name is Chris Dent and I'm currently working for Red
 Hat as part of their OpenStack group.
 
@@ -12,21 +12,20 @@ quite a long time. I'm in the school of thought that thinks the reason
 the web is successful is not just because it is open and standards-based
 but because that openness allows and encourages access from all sort of
 agents, human and machine. That access is like a conversation: as long
-as the thing you are talking with is following the basic rules of the
-language then anyone or anything that speaks the language can
-participate.
+as the things talking are following the basic rules of the language then
+anyone or anything that speaks the language can participate.
 
 Tests, too, are a form of conversation. Depending on how they are used
-they can confirm that everything is still speaking the same language or
-help the right language -- the one that lots of different things can use
--- be found.
+they can confirm that everything is still speaking the same language and
+working correctly or help the right language -- the one that lots of
+different things can use -- emerge.
 
 I've been working on OpenStack for about a year and a half. It's a cool
 and exciting project creating very useful stuff but it sometimes feels
-like it has been built by people who hate both Python and hate HTTP.
-The systems are complex and inscrutable, the learning curve is
-extremely steep and the costs associated with experimenting and
-exploring are very high.
+like it has been built by people who hate Python and hate HTTP. The
+systems are complex and inscrutable, the learning curve for new
+developers is extremely steep and the costs associated with
+experimenting and exploring are very high.
 
 In other situations where I've been faced with such confusion I've been
 able to use the tests associated with the project as a way of
@@ -159,10 +158,12 @@ these but there are more:
 
 Gabbi is about 9 months old. In that time I've been able to identify
 some interesting patterns of use. One important aspect of gabbi is that
-it is so easy to write tests that it can be quite fun to use and one of
-the most effective ways to use it is to play dumb and just throw random
-stuff at the API being tested and see what happens. This tends to reveal
-lots of bugs and is a fantastic learning aid.
+it is so easy to write tests that it can be quite fun to use. One of the
+most effective ways to use it is to play dumb and just throw random
+stuff at the API being tested and see what happens. A sort of human
+driven fuzz testing. This tends to reveal lots of bugs, is a fantastic
+learning aid and shows holes in the grammar of the API. [If time
+consider missing collection URI example.]
 
 More often than not when you're testing you're going to need some kind
 of configuration fixture that will make sure that the application knows
@@ -176,10 +177,10 @@ While sometimes this may be useful or required, making a habit of it
 results in unreadable tests and then we are back where we started in a
 pre-gabbi era.
 
-Thanks very much. Here are some links that are related to Gabbi. Note
-that gabbi-demo is the server I used in today's demo. Besides being
-useful for that it is also built as a tutorial for how to do test driven
-development with Gabbi. If you read the git commit log in reverse order
-it describes how to make a simple object API with gabbi tests.
+That's it, thanks very much. Here are some links that are related to
+Gabbi. Note that gabbi-demo is the server I used in today's demo. It is
+alsoa tutorial on how to do test driven development with Gabbi. If you
+read the git commit log in reverse it describes how to make a simple
+object API with gabbi tests.
 
 Questions?
