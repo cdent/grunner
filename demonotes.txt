@@ -1,0 +1,74 @@
+
+Before I begin the demo I should explain the pieces involved. Gabbi uses
+YAML-based representations of HTTP requests that can be run as tests. In
+this demo we're going to be using a command line too called gabbi-run to
+process the files. This is just one way to process them. On the left the
+contents of the test file and the output of gabbi-run is displayed. On
+the top right we have a verbose representation of the HTTP request. On
+the bottom right is the request log of a gunicorn driven WSGI server
+that operates as a simple container and object storage system.
+
+In this first example we're seeing the basics of a gabbi file. It is a
+YAML file with a "tests" entry containing an ordered sequence of named
+tests. Each test must have a name and a url. If no method or status are
+provided they default to GET and 200. Over on the right we see a
+representation of what we send to the server and what we get back.
+Because of the "verbose" setting we are only seeing headers for this
+test. Here below we see the GET request in the log of the server.
+
+In this next example we are making the same request but checking to
+see that the response contains a string that we are expecting. When
+verbose is set to "true" both headers and bodies are displayed.
+
+It's possible to state request method, evaluate the status code and
+inspect the response headers. In this example we're trying to delete the
+root URL. The server won't allow DELETE at this URL so there's a 405
+response and an allow header indicating which methods are allowed.
+
+If a gabbi file sets defaults they are used for every test in that
+file. Each test can override the defaults if it needs to do so. In
+this case we're turning on verbose for both requests in the file. The
+first request shows two features:
+
+* being able to set any request_headers
+* being able to set the request body. If data is not a string and
+  content-type has been set appropriately data is transformed into
+  JSON.
+
+As we can see on the right a small bit of JSON is PUT to the server.
+
+In the second request we confirm that the container we tried to create
+is there and has the owner we expect. $LOCATION is a magic variable that
+is expanded to whatever the value of the location header was in the
+previous response. response_json_paths let us inspect the response
+body, if it is JSON, using JSONPath statements. In this case we are
+confirming that we have an object containing an "owner" key with a
+"sam" value.
+
+Using JSONPath is an example of a thing called a ResponseHandler. You
+can add your own to validate things like XML or HTML
+
+Now we're going to create and confirm an object in the container. In
+this API if we POST to the objects collection a new object is created
+for us with a uuid as its identifier. In response_headers we're using
+a regular expression to validate that the location header ends in what
+looks like a uuid. This is a very useful feature but I tend to use it
+sparingly as it introduces complexity and ambiguity in the tests,
+cutting down on readability a great deal.
+
+The subsequent GET confirms that the new object is where we expect it
+to be and has the desired data.
+
+Now we're going to PUT a kitten in the shed. This demonstrates that
+data can be loaded from an external file. Here it is now:
+http://localhost:8000/shed/objects/kitten
+
+It's possible to use JSONPath to refer to the data in the previous
+response. In this example we're asking to delete the first object in the
+list of objects in the shed. Then we confirm the kitten is still there
+(note the use of the accept header to get a different representation).
+
+And finally, I need some input. A new style of expressing the request
+method and URL is being explored. How do you feel about the second option
+here? Is it better because it is more readable or not great because
+it is less explicit and is different from the rest of the structure?

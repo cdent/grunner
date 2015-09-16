@@ -1,0 +1,110 @@
+
+# Slide 1
+
+Hi I'm here to talk about a tool I built for testing web services
+called "Gabbi". My name is Chris Dent and I'm currently working for
+Red Hat as part of their OpenStack group. I hope you're enjoying your
+first day of PyconUK.
+
+# Slide 2
+
+I've been developing tools somewhere in the vicinity of the web for
+quite a long time. I'm in the school of thought that thinks the web is
+successful not just because it is open and standards-based but because
+that openness encourages access from all sorts of agents, human and
+machine.
+
+That access is like a conversation: as long as the thing talking are
+following the basic rules of the language then anyone or anything that
+speaks that language can participate.
+
+# Slide 3
+
+Tests too are a form of conversation. Depending on how they are used
+they can confirm that everything is still speaking the same language
+and working correctly or help the right language--the one that works
+for lots of different things--emerge.
+
+# Slide 4
+
+I've been working on OpenStack for about a year and a half. OpenStack
+is a cool and exciting project creating very useful stuff but it
+sometimes feels that it has been created by people who hate Python and
+hate HTTP. The systems are complex and inscrutable, the learning curve
+for new developers is extremely steep and the costs of associated with
+experimenting and exploring are very high.
+
+In other situations where I've been faced with such confusion I've
+been able to use the tests associated with the project as a road to
+understanding. This hasn't worked well with OpenStack because many of
+the tests are in deeply nested class hierarchies that obscure any sense
+of what's going on. For the sake of avoiding repetition API
+interactions are hidden behind arbitrary clients that mask HTTP
+interactions and error handling. In general it is just too hard to see
+how things work.
+
+# Slide 5
+
+All this frustration made me itch, so I scratched. I decided I needed
+to create a tool that made it easy to evaluate APIs that was clean,
+clear and focused on the HTTP interactions and could be equally useful
+for exploring and experimenting with existing APIs and doing test
+driven development of new APIs.
+
+# Slide 6
+
+I called the result "Gabbi" and started using it to test a few
+OpenStack projects. It looks a bit like this. To me at least the gabbi
+version of this test is a good deal more readable. The upper example
+is more about Python than HTTP. Python is a great language but that's
+really what we're trying to test here. From just the visible Python
+would you be able to reconstruct the URL being used in the request?
+
+# Slide 7
+
+{{demonotes.txt}}
+
+# Slide 8
+
+That showed you some of the features of Gabbi.
+
+# Slide 9
+
+But there are plenty more. ["which should I explain?"]
+
+# Slide 10
+
+Gabbi is about none months old. In that time I've been able to
+identify some interesting patterns of use. One important aspect of
+gabbi is that it is so easy to write tests that it can be quite fun to
+use. One of the most effective ways to use it is to play dumb and
+throw random stuff at the API being tested and see what happens. Sort
+of human driven fuzz testing. This tends to reveal lots of bugs, is a
+fantastic learning aid and shows holes in the grammar of the API.
+[collection example from gnocchi e.g.]
+
+# Slide 11
+
+More often than not when you're testing you're going to need some kind
+of configuration fixture that will make sure the application knows
+where its persistence layer is and what middleware is in place.
+
+# Slide 12
+
+One of the biggest things I've learned from observing people using the
+tool is that it can be very tempting to use gabbi too much; either in
+evaluating too much in one single test or trying to evaluate, by way
+of secondary behaviors, aspects of the system that are beyond the API.
+While sometimes this may be useful or required, making a habit of it
+results in unreadable tests and then we are back where we started in a
+pre-gabbi era.
+
+# Slide 13
+
+That's it, thanks very much. Here are some links that are related to
+Gabbi. Note that gabbi-demo is the server I used in today's demo. It
+is also a tutorial on how to do test driven development with Gabbi. If
+you read the git commit log in reverse it describes how to make a
+simple object API with gabbi tests.
+
+Questions?
